@@ -16,3 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['middleware'], function () {
+    Route::get('news','NewsAPI@index'); //get all news
+    Route::get('news/{id}','NewsAPI@show'); //get a news
+    Route::get('news/category/{kategori}','NewsAPI@searchByGolongan');
+    Route::post('news','NewsAPI@store'); //add news
+    Route::put('news/{id}','NewsAPI@update'); //update news
+    Route::delete('news/{id}','NewsAPI@destroy'); //delete news
+});
