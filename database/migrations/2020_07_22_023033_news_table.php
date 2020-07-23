@@ -24,12 +24,13 @@ class NewsTable extends Migration
             $table->date('news_approval_date');
             $table->dateTime('news_created');
             $table->date('news_date');
-            $table->integer('media_id');
+            $table->foreign('media_id')->references('media_id')->on('medias');
             $table->string('categories');
             $table->string('keywords');
-            $table->integer('lang_id');
+            $table->foreign('lang_id')->references('lang_id')->on('languages');
             $table->integer('verificator_id');
             $table->integer('creator_id');
+            $table->foreign('project_id')->references('project_id')->on('projects');
             $table->string('image');
             $table->timestamps();
         });
