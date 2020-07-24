@@ -15,11 +15,17 @@ class ListContributeTable extends Migration
     {
         Schema::create('list_contribute', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreign('project_id')->references('project_id')->on('projects');
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('role_id')->references('role_id')->on('roles');
+	    $table->unsignedBigInteger('project_id');
+	    $table->unsignedBigInteger('user_id');
+	    $table->unsignedBigInteger('role_id');
             $table->timestamps();
         });
+
+	Schema::table('list_contribute', function($table) {
+            $table->foreign('project_id')->references('project_id')->on('projects');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('role_id')->on('roles');
+	});
     }
 
     /**
