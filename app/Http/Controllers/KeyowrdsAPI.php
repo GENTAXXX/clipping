@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Project;
+use App\Keyword;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class CategoriesAPI extends Controller
 {
+
     public function index()
     {
-        $result = Project::all();
+        //This function is used to get aall news
+        $result = Keyword::all();
         if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
@@ -29,17 +31,14 @@ class ProjectController extends Controller
     {
         //This function is used to store a news
         $request->validate([
-            'project_name' => 'required',
-            'project_year' => 'required',
-            'role_id' => 'required'
-            
+            'keyword_name' => 'required'
         ]);
 
-        $project = Project::create($request->all());
+        $keyword = Keyword::create($request->all());
 
-        if ($project) {
+        if ($keyword) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $keyword;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -50,7 +49,7 @@ class ProjectController extends Controller
     public function show($id)
     {
         //This function is used to get a news by id
-        $result = Project::find($id);
+        $result = Keyword::find($id);
 
         if ($result) {
             $data['code'] = 200;
@@ -62,9 +61,9 @@ class ProjectController extends Controller
         return response()->json($data);
     }
 
-    public function edit(Project $project)
+    public function edit(Keyword $keyword)
     {
-        return view('news.edit', compact('news'));
+        return view('news.edit', compact('keywords'));
     }
 
     public function update(Request $request, $id)
@@ -92,16 +91,14 @@ class ProjectController extends Controller
 
         // $result = News::update($request->all());
 
-        $project = Project::where('project_id', $id)->first();
+        $keyword = Keyword::where('keyword_id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $project->project_name          = $request->news_title;
-        $project->project_year          = $request->news_desc;
-        $project->role_id               = $request->news_extract;
-        $project->save();
+        $keyword->keyword_name           = $request->keyword_name;
+        $keyword->save();
 
-        if ($project) {
+        if ($keyword) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $keyword;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -112,7 +109,7 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         //This function is used to delete a news by id
-        $result = Project::find($id);
+        $result = Keyword::find($id);
         $result->delete();
 
         if ($result) {
