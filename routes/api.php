@@ -25,3 +25,12 @@ Route::group(['middleware'], function () {
     Route::put('news/{id}','NewsAPI@update'); //update news
     Route::delete('news/{id}','NewsAPI@destroy'); //delete news
 });
+
+Route::group(['middleware'], function () {
+    Route::get('projects', 'ProjectAPI@index'); //get all news
+    Route::get('news/{id}', 'NewsAPI@show'); //get a news
+    Route::get('news/category/{kategori}', 'NewsAPI@searchByGolongan');
+    Route::post('news', 'NewsAPI@store'); //add news
+    Route::put('news/{id}', 'NewsAPI@update'); //update news
+    Route::delete('news/{id}', 'NewsAPI@destroy'); //delete news
+});

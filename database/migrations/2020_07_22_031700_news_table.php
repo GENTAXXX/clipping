@@ -19,9 +19,6 @@ class NewsTable extends Migration
             $table->string('news_desc');
             $table->string('news_area');
             $table->string('news_extract');
-            $table->string('news_status');
-            $table->boolean('news_approval');
-            $table->date('news_approval_date');
             $table->dateTime('news_created');
             $table->date('news_date');
             $table->unsignedBigInteger('media_id');
@@ -30,8 +27,6 @@ class NewsTable extends Migration
             $table->string('keywords');
             $table->unsignedBigInteger('lang_id');
             $table->foreign('lang_id')->references('lang_id')->on('languages');
-            $table->integer('verificator_id');
-            $table->integer('creator_id');
             $table->unsignedBigInteger('project_id');
             $table->foreign('project_id')->references('project_id')->on('projects');
             $table->string('image');
