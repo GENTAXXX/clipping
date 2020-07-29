@@ -14,25 +14,24 @@ class NewsTable extends Migration
     public function up()
     {
         Schema::create('news', function (Blueprint $table) {
-            $table->bigIncrements('news_id');
-            $table->string('news_title');
-            $table->string('news_desc');
-            $table->string('news_area');
-            $table->string('news_extract');
-            $table->dateTime('news_created');
-            $table->date('news_date');
+            $table->id('id');
+            $table->string('title');
+            $table->string('desc');
+            $table->string('area');
+            $table->string('extract');
+            $table->dateTime('created');
+            $table->date('date');
             $table->unsignedBigInteger('media_id');
-            $table->foreign('media_id')->references('media_id')->on('medias');
+            $table->foreign('media_id')->references('id')->on('medias');
             $table->string('categories');
             $table->string('keywords');
             $table->unsignedBigInteger('lang_id');
-            $table->foreign('lang_id')->references('lang_id')->on('languages');
+            $table->foreign('lang_id')->references('id')->on('languages');
             $table->unsignedBigInteger('project_id');
-            $table->foreign('project_id')->references('project_id')->on('projects');
+            $table->foreign('project_id')->references('id')->on('projects');
             $table->string('image');
             $table->timestamps();
         });
-        
     }
 
     /**

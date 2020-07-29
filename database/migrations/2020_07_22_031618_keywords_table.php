@@ -14,8 +14,8 @@ class KeywordsTable extends Migration
     public function up()
     {
         Schema::create('keywords', function (Blueprint $table) {
-            $table->bigIncrements('keyword_id');
-            $table->string('keyword_name');
+            $table->id('id');
+            $table->string('name');
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ApprovalTable extends Migration
+class StatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,20 @@ class ApprovalTable extends Migration
      */
     public function up()
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id('id');
-            $table->string('news_status');
-            $table->boolean('news_approval');
-            $table->date('news_approval_date');
+            $table->string('status');
+            $table->boolean('approval');
+            $table->date('approval_date');
             $table->unsignedBigInteger('news_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
 
-        Schema::table('approvals', function ($table) { 
-            $table->foreign('news_id')->references('news_id')->on('news');
+        Schema::table('statuses', function ($table) {
+            $table->foreign('news_id')->references('id')->on('news');
             $table->foreign('user_id')->references('id')->on('users');
         });
-
     }
 
     /**
@@ -37,6 +36,6 @@ class ApprovalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('statuses');
     }
 }
