@@ -16,7 +16,12 @@ class KeywordsTable extends Migration
         Schema::create('keywords', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
+            $table->unsignedBigInteger('news_id');
             $table->timestamps();
+        });
+
+        Schema::table('keywords', function ($table) {
+            $table->foreign('news_id')->references('id')->on('news');
         });
     }
 

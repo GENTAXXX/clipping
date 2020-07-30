@@ -8,15 +8,14 @@ class News extends Model
 {
     protected $primaryKey = 'news_id';
     protected $fillable = [
-        'news_id','news_title','news_desc','news_extract','news_status','news_area','news_approval','news_approval_date','news_created',
-        'media_id','news_date','categories','keywords','lang_id','verificator_id','creator_id','project_id','image'
+        'news_id','news_title','news_desc','news_extract','news_area','news_created','media_id','news_date','categories','keywords','lang_id','project_id','image'
     ];
 
     public function language(){
         return $this->hasOne('App\Language', 'lang_id', 'lang_id');
     }
 
-    public function categorie(){
+    public function category(){
         return $this->hasOne('App\Category');
     }
 
@@ -25,6 +24,6 @@ class News extends Model
     }
 
     public function keyword(){
-        return $this->hasMany('App\Keyword');
+        return $this->hasMany('App\Keyword', 'keyword_id', 'keyword_id');
     }
 }

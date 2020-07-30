@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Approval extends Model
+class Statuses extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [

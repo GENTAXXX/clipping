@@ -24,7 +24,6 @@ class NewsTable extends Migration
             $table->unsignedBigInteger('media_id');
             $table->foreign('media_id')->references('id')->on('medias');
             $table->string('categories');
-            $table->string('keywords');
             $table->unsignedBigInteger('lang_id');
             $table->foreign('lang_id')->references('id')->on('languages');
             $table->unsignedBigInteger('project_id');
