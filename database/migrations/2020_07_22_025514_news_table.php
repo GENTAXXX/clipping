@@ -18,7 +18,8 @@ class NewsTable extends Migration
             $table->string('title');
             $table->string('desc');
             $table->string('area');
-            $table->string('extract');
+            $table->string('content');
+            $table->boolean('scan');
             $table->dateTime('created');
             $table->date('date');
             $table->unsignedBigInteger('media_id');

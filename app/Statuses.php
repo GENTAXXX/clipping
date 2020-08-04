@@ -8,7 +8,7 @@ class Statuses extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','news_status','news_approval','news_approval_date','news_id','user_id'
+        'id','status','approval','approval_date','news_id','user_id'
     ];
 
     public function news()

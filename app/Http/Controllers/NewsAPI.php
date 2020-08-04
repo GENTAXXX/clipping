@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class NewsAPI extends Controller
 {
@@ -153,5 +154,13 @@ class NewsAPI extends Controller
             $data['result'] = 'Error';
         }
         return response($data);
+    }
+
+    public function getAllProjectbyStatus(Request $request){
+
+        $project_id = $request->project_id;
+        $data['news'] = News::with('statuses')->whereHas('statuses', function($q){
+            $q->where('id', $request->status_id);
+        })->where("news.project_id", $project_id)->count();
     }
 }

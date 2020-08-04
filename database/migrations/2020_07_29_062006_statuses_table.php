@@ -16,8 +16,6 @@ class StatusesTable extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id('id');
             $table->string('status');
-            $table->boolean('approval');
-            $table->date('approval_date');
             $table->unsignedBigInteger('news_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

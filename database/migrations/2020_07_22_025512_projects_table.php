@@ -16,7 +16,7 @@ class ProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
-            $table->year('year');
+            $table->string('desc');
             $table->timestamps();
         });
     }

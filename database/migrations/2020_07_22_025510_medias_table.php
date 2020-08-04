@@ -18,8 +18,8 @@ class MediasTable extends Migration
             $table->string('name');
             $table->string('proviences');
             $table->string('regencies');
-            $table->string('proviences_id');
-            $table->string('regencies_id');
+            $table->integer('proviences_id');
+            $table->integer('regencies_id');
             $table->timestamps();
         });
     }
