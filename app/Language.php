@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Language extends Model
 {
-    protected $primaryKey = 'lang_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'lang_id','lang_name','lang_code'
+        'id','name','code'
     ];
+
+    public function news(){
+        return $this->hasOne('App\news');
+    }
 }

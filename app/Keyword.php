@@ -6,8 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Keyword extends Model
 {
-    protected $primaryKey = 'keyword_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'keyword_id','keyword_name'
+        'id','name','news_id'
     ];
+
+    public function news()
+    {
+        return $this->hasMany('App\News');
+    }
 }

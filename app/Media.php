@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Media extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','name','parent'
+        'id','name','proviences','regencies','proviences_id','regencies_id'
     ];
 
     public function news()

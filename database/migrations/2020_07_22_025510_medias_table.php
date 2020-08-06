@@ -14,12 +14,12 @@ class MediasTable extends Migration
     public function up()
     {
         Schema::create('medias', function (Blueprint $table) {
-            $table->bigIncrements('media_id');
-            $table->string('media_name');
-            $table->string('media_proviences');
-            $table->string('media_regencies');
-            $table->string('media_proviences_id');
-            $table->string('media_regencies_id');
+            $table->id('id');
+            $table->string('name');
+            $table->string('proviences');
+            $table->string('regencies');
+            $table->integer('proviences_id');
+            $table->integer('regencies_id');
             $table->timestamps();
         });
     }

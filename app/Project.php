@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    protected $primaryKey = 'project_id';
+    protected $primaryKey = 'id';
     protected $fillable = [
-        'project_id','project_name','project_year','role_id'
+        'id','name','year','role_id'
     ];
 
     public function role()
