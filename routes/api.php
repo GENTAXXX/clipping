@@ -20,9 +20,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['middleware'], function () {
     Route::get('news','NewsAPI@index'); //get all news
+    Route::get('news/all', 'NewsAPI@getAllProjectByStatus');
     Route::get('news/{id}','NewsAPI@show'); //get a news
     Route::get('news/category/{kategori}','NewsAPI@searchByGolongan');
-    Route::get('news/{project_id}', 'NewsAPI@getAllProjectByStatus');
     Route::post('news','NewsAPI@store'); //add news
     Route::put('news/{id}','NewsAPI@update'); //update news
     Route::delete('news/{id}','NewsAPI@destroy'); //delete news
