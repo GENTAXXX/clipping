@@ -2,18 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Language;
+use App\Media;
+use App\Project;
+use App\Statuses;
 use App\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class NewsAPI extends Controller
+class APIController extends Controller
 {
-    
     public function index()
     {
         //This function is used to get aall news
         $result = News::all();
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
@@ -22,12 +25,12 @@ class NewsAPI extends Controller
         }
         return response()->json($data);
     }
-    
+
     public function create()
     {
         return view('news.create');
     }
-    
+
     public function store(Request $request)
     {
         //This function is used to store a news
@@ -48,7 +51,7 @@ class NewsAPI extends Controller
 
         $news = News::create($request->all());
 
-        if($news){
+        if ($news) {
             $data['code'] = 200;
             $data['result'] = $news;
         } else {
@@ -56,15 +59,14 @@ class NewsAPI extends Controller
             $data['result'] = 'Error';
         }
         return response($data);
-    
     }
-    
+
     public function show($id)
     {
         //This function is used to get a news by id
         $result = News::find($id);
 
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
@@ -73,12 +75,12 @@ class NewsAPI extends Controller
         }
         return response()->json($data);
     }
-    
+
     public function edit(News $news)
     {
         return view('news.edit', compact('news'));
     }
-    
+
     public function update(Request $request, $id)
     {
         //This function is used to update a news by id
@@ -104,7 +106,7 @@ class NewsAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $news = News::where('news_id',$id)->first();
+        $news = News::where('news_id', $id)->first();
         // $news->news_id              = $request->news_id;
         $news->title           = $request->title;
         $news->desc            = $request->desc;
@@ -119,7 +121,7 @@ class NewsAPI extends Controller
         $news->image           = $request->image;
         $news->save();
 
-        if($news){
+        if ($news) {
             $data['code'] = 200;
             $data['result'] = $news;
         } else {
@@ -128,20 +130,142 @@ class NewsAPI extends Controller
         }
         return response()->json($data);
     }
-    
+
     public function destroy($id)
     {
-        //This function is used to delete a news by id
         $result = News::find($id);
         $result->delete();
 
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
+        return response($data);
+    }
+
+    public function getListProject(){
+
+        $result = Project::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getListMedias()
+    {
+
+        $result = Media::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getListCategories()
+    {
+
+        $result = Category::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getListLanguage()
+    {
+
+        $result = Language::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getAllProjectbyStatus(Request $request)
+    {
+
+        $project_id = $request->project_id;
+        $status_id = $request->status_id;
+
+        $result = Statuses::with('news')->whereHas('news', function ($q) use ($status_id, $project_id) {
+            $q->where('news_id', $status_id)->where("news.project_id", $project_id);
+        })->get();
+
+        if ($request->count) {
+            if (!$result->isEmpty()) {
+                $result = $result->count();
+            } else {
+                $result = 0;
+            }
+        }
+
+        if ($request->count) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+
+        return response($data);
+    }
+
+    public function getAllProjectbyStatusAndUser(Request $request){
+
+        $project_id = $request->project_id;
+        $status_id = $request->status_id;
+        $user_id = $request->user_id;
+
+        $result = Statuses::with('news')->whereHas('news', function ($q) use ($status_id, $project_id, $user_id) {
+            $q->where('news_id', $status_id)->where("news.project_id", $project_id)->where("news.user_id", $user_id);
+        })->get();
+
+        if ($request->count) {
+            if (!$result->isEmpty()) {
+                $result = $result->count();
+            } else {
+                $result = 0;
+            }
+        }
+
+        if ($request->count) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+
         return response($data);
     }
 }

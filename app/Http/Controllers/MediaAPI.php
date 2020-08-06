@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Project;
+use App\Media;
 use Illuminate\Http\Request;
 
-class ProjectAPI extends Controller
+class MediaAPI extends Controller
 {
     public function index()
     {
-        $result = Project::all();
+        $result = Media::all();
         if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
@@ -22,7 +22,7 @@ class ProjectAPI extends Controller
 
     public function create()
     {
-        return view('project.create');
+        return view('media.create');
     }
 
     public function store(Request $request)
@@ -30,15 +30,18 @@ class ProjectAPI extends Controller
         //This function is used to store a news
         $request->validate([
             'name' => 'required',
-            'desc' => 'required'
-            
+            'proviences' => 'required',
+            'regencies' => 'required',
+            'proviences_id' => 'required',
+            'regencies_id' => 'required'
+
         ]);
 
-        $project = Project::create($request->all());
+        $media = Media::create($request->all());
 
-        if ($project) {
+        if ($media) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $media;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -49,7 +52,7 @@ class ProjectAPI extends Controller
     public function show($id)
     {
         //This function is used to get a news by id
-        $result = Project::find($id);
+        $result = Media::find($id);
 
         if ($result) {
             $data['code'] = 200;
@@ -61,7 +64,7 @@ class ProjectAPI extends Controller
         return response()->json($data);
     }
 
-    public function edit(Project $project)
+    public function edit(Media $media)
     {
         return view('news.edit', compact('news'));
     }
@@ -91,15 +94,18 @@ class ProjectAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $project = Project::where('id', $id)->first();
+        $media = Media::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $project->name          = $request->name;
-        $project->desc          = $request->desc;
-        $project->save();
+        $media->name              = $request->name;
+        $media->proviences        = $request->proviences;
+        $media->regencies         = $request->regencies;
+        $media->proviences_id     = $request->proviences_id;
+        $media->regencies_id      = $request->regencies_id;
+        $media->save();
 
-        if ($project) {
+        if ($media) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $media;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -110,7 +116,7 @@ class ProjectAPI extends Controller
     public function destroy($id)
     {
         //This function is used to delete a news by id
-        $result = Project::find($id);
+        $result = Media::find($id);
         $result->delete();
 
         if ($result) {
