@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\News;
+use App\Statuses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -159,8 +160,32 @@ class NewsAPI extends Controller
     public function getAllProjectbyStatus(Request $request){
 
         $project_id = $request->project_id;
-        $data['news'] = News::with('statuses')->whereHas('statuses', function($q){
-            $q->where('id', $request->status_id);
-        })->where("news.project_id", $project_id)->count();
+        $status_id = $request->status_id;
+
+        $result = Statuses::with('news')->whereHas('news', function($q) use($status_id, $project_id){
+            $q->where('news_id', $status_id)->where("news.project_id", $project_id);
+        })->get();
+
+        if($request->count){
+            if(!$result->isEmpty()){
+                $result = $result->count();
+            } else {
+                $result = 0;
+            }
+        }
+
+        if($request->count){
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else if($result){
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+
+        return response($data);
     }
+
 }
