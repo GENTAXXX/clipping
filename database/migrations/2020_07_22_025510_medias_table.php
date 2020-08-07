@@ -16,11 +16,14 @@ class MediasTable extends Migration
         Schema::create('medias', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
-            $table->string('proviences');
-            $table->string('regencies');
-            $table->integer('proviences_id');
-            $table->integer('regencies_id');
+            $table->unsignedBigInteger('proviences_id');
+            $table->unsignedBigInteger('regencies_id');
             $table->timestamps();
+        });
+
+        Schema::table('medias', function ($table) {
+            $table->foreign('regencies_id')->references('id')->on('regencies');
+            $table->foreign('provinces_id')->references('id')->on('provinces');
         });
     }
 

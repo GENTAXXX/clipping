@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\News;
+use App\Statuses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

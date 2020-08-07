@@ -8,12 +8,12 @@ class Statuses extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','status','approval','approval_date','news_id','user_id'
+        'id','status','news_id','user_id'
     ];
 
     public function news()
     {
-        return $this->hasOne('App\News', 'news_id', 'news_id');
+        return $this->hasOne('App\News', 'id', 'news_id');
     }
 
     public function users()

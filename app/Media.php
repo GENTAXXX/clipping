@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Media extends Model
 {
     protected $primaryKey = 'id';
+    protected $table = 'medias';
     protected $fillable = [
-        'id','name','proviences','regencies','proviences_id','regencies_id'
+        'id','name','proviences_id','regencies_id'
     ];
 
     public function news()
