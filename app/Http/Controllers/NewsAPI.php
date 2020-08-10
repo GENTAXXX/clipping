@@ -37,6 +37,7 @@ class NewsAPI extends Controller
             'desc' => 'required',
             'content' => 'required',
             'area' => 'required',
+            'scan' => 'required',
             'created' => 'required',
             'media_id' => 'required',
             'date' => 'required',
@@ -111,6 +112,7 @@ class NewsAPI extends Controller
         $news->desc            = $request->desc;
         $news->content         = $request->content;
         $news->area            = $request->area;
+        $news->scan            = $request->scan;
         $news->created         = $request->created;
         $news->media_id        = $request->media_id;
         $news->date            = $request->date;
