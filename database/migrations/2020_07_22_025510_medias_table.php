@@ -16,7 +16,7 @@ class MediasTable extends Migration
         Schema::create('medias', function (Blueprint $table) {
             $table->id('id');
             $table->string('name');
-            $table->unsignedBigInteger('proviences_id');
+            $table->unsignedBigInteger('provinces_id');
             $table->unsignedBigInteger('regencies_id');
             $table->timestamps();
         });

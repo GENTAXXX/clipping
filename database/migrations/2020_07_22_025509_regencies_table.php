@@ -15,9 +15,13 @@ class RegenciesTable extends Migration
     {
         Schema::create('regencies', function (Blueprint $table) {
             $table->id('id');
+            $table->unsignedBigInteger('provinces_id');
             $table->string('name');
-            $table->integer('code');
             $table->timestamps();
+        });
+
+        Schema::table('regencies', function ($table) {
+            $table->foreign('provinces_id')->references('id')->on('provinces');
         });
     }
 

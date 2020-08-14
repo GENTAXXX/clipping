@@ -9,6 +9,7 @@ use App\Project;
 use App\Statuses;
 use App\News;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class APIController extends Controller
 {
@@ -148,6 +149,22 @@ class APIController extends Controller
         return response($data);
     }
 
+    public function search(Request $request){
+
+        $search = $request->search;
+        $result = News::where('title','like',"%".$search."%")->paginate(2);
+        return view('index',compact('news'));
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response($data);
+    }
+
     public function getListProject(){
 
         $result = Project::all();
@@ -162,7 +179,7 @@ class APIController extends Controller
         return response()->json($data);
     }
 
-    public function getListMedias()
+    public function getListMedia()
     {
 
         $result = Media::all();
@@ -196,6 +213,20 @@ class APIController extends Controller
     {
 
         $result = Language::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getNewsById(){
+        
+        $result = News::all()->where('news_id', 'news.id');
 
         if ($result) {
             $data['code'] = 200;
