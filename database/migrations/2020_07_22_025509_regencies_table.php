@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class MediasTable extends Migration
+class RegenciesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,14 @@ class MediasTable extends Migration
      */
     public function up()
     {
-        Schema::create('medias', function (Blueprint $table) {
+        Schema::create('regencies', function (Blueprint $table) {
             $table->id('id');
-            $table->string('name');
             $table->unsignedBigInteger('provinces_id');
-            $table->unsignedBigInteger('regencies_id');
+            $table->string('name');
             $table->timestamps();
         });
 
-        Schema::table('medias', function ($table) {
-            $table->foreign('regencies_id')->references('id')->on('regencies');
+        Schema::table('regencies', function ($table) {
             $table->foreign('provinces_id')->references('id')->on('provinces');
         });
     }
@@ -34,6 +32,6 @@ class MediasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medias');
+        Schema::dropIfExists('regencies');
     }
 }

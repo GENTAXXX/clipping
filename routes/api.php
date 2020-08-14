@@ -26,12 +26,16 @@ Route::group(['middleware'], function () {
     Route::post('news','NewsAPI@store'); //add news
     Route::put('news/{id}','NewsAPI@update'); //update news
     Route::delete('news/{id}','NewsAPI@destroy'); //delete news
+    Route::get('search', 'APIController@search');
 });
 
-Route::group(['middleware'], function () {
-    Route::get('projects', 'APIController@getAllProjects');
-    Route::get('projects/{id}', 'ProjectAPI@show'); 
-});
+
+Route::get('languages', 'LanguagesAPI@index');
+
+
+Route::get('projects', 'APIController@getListProject');
+Route::get('medias', 'APIController@getListMedia');
+Route::get('categories', 'APIController@getListCategories');
 
 Route::get('languages', 'APIController@getAllLanguages');
 Route::get('categories','APIController@getAllCategories');
