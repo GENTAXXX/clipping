@@ -13,27 +13,39 @@ use Illuminate\Support\Facades\DB;
 
 class APIController extends Controller
 {
-    public function index()
-    {
-        //This function is used to get aall news
-        $result = News::all();
-        if ($result) {
+
+    public function getAllNewsbyProjectAndStatus(Request $request){
+
+        $project_id = $request->project_id;
+        $status = $request->status;
+
+        $result = Statuses::with('news')->whereHas('news', function($q) use($status, $project_id){
+            $q->where('status', $status)->where("news.project_id", $project_id);
+        })->get();
+
+        if($request->count){
+            if(!$result->isEmpty()){
+                $result = $result->count();
+            } else {
+                $result = 0;
+            }
+        }
+
+        if ($request->count) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return response()->json($data);
-    }
 
-    public function create()
-    {
-        return view('news.create');
+        return response($data);
     }
-
-    public function store(Request $request)
-    {
+    
+    public function addNews(Request $request){
         //This function is used to store a news
         $request->validate([
             'title' => 'required',
@@ -63,28 +75,7 @@ class APIController extends Controller
         return response($data);
     }
 
-    public function show($id)
-    {
-        //This function is used to get a news by id
-        $result = News::find($id);
-
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response()->json($data);
-    }
-
-    public function edit(News $news)
-    {
-        return view('news.edit', compact('news'));
-    }
-
-    public function update(Request $request, $id)
-    {
+    public function updateNews(Request $request, $id){
         //This function is used to update a news by id
 
         // $request->validate([
@@ -134,8 +125,7 @@ class APIController extends Controller
         return response()->json($data);
     }
 
-    public function destroy($id)
-    {
+    public function deleteNewsById($id){
         $result = News::find($id);
         $result->delete();
 
@@ -149,11 +139,14 @@ class APIController extends Controller
         return response($data);
     }
 
-    public function search(Request $request){
+    public function searchNewsByTitle(Request $request){
 
+        $project_id = $request->project_id;
+        $status = $request->status;
         $search = $request->search;
-        $result = News::where('title','like',"%".$search."%")->paginate(2);
-        return view('index',compact('news'));
+        $result = Statuses::with('news')->whereHas('news', function($q) use($status, $project_id, $search){
+            $q->where('status', $status)->where("news.project_id", $project_id)->where('news.title','like',"%".$search."%");
+        })->get();
 
         if ($result) {
             $data['code'] = 200;
@@ -163,65 +156,6 @@ class APIController extends Controller
             $data['result'] = 'Error';
         }
         return response($data);
-    }
-
-    public function getListProject(){
-
-        $result = Project::all();
-
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response()->json($data);
-    }
-
-    public function getListMedia()
-    {
-
-        $result = Media::all();
-
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response()->json($data);
-    }
-
-    public function getListCategories()
-    {
-
-        $result = Category::all();
-
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response()->json($data);
-    }
-
-    public function getListLanguage()
-    {
-
-        $result = Language::all();
-
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response()->json($data);
     }
 
     public function getNewsById(){
@@ -238,67 +172,58 @@ class APIController extends Controller
         return response()->json($data);
     }
 
-    public function getAllProjectbyStatus(Request $request)
-    {
+    public function getListProjects(){
 
-        $project_id = $request->project_id;
-        $status_id = $request->status_id;
-
-        $result = Statuses::with('news')->whereHas('news', function ($q) use ($status_id, $project_id) {
-            $q->where('news_id', $status_id)->where("news.project_id", $project_id);
-        })->get();
-
-        if ($request->count) {
-            if (!$result->isEmpty()) {
-                $result = $result->count();
-            } else {
-                $result = 0;
-            }
-        }
-
-        if ($request->count) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else if ($result) {
+        $result = Project::all();
+        
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-
-        return response($data);
+        return response()->json($data);
     }
 
-    public function getAllProjectbyStatusAndUser(Request $request){
+    public function getListMedias(){
+        $result = Media::all();
 
-        $project_id = $request->project_id;
-        $status_id = $request->status_id;
-        $user_id = $request->user_id;
-
-        $result = Statuses::with('news')->whereHas('news', function ($q) use ($status_id, $project_id, $user_id) {
-            $q->where('news_id', $status_id)->where("news.project_id", $project_id)->where("news.user_id", $user_id);
-        })->get();
-
-        if ($request->count) {
-            if (!$result->isEmpty()) {
-                $result = $result->count();
-            } else {
-                $result = 0;
-            }
-        }
-
-        if ($request->count) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else if ($result) {
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
+        return response()->json($data);
+    }
 
-        return response($data);
+    public function getListCategories(){
+
+        $result = Category::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function getListLanguages(){
+
+        $result = Language::all();
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
     }
 }

@@ -19,24 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware'], function () {
-    Route::get('news','NewsAPI@index'); //get all news
-    Route::get('news/all', 'APIController@getAllNewsbyProjectAndStatus');
-    Route::get('news/{id}','NewsAPI@show'); //get a news
-    Route::get('news/category/{kategori}','NewsAPI@searchByGolongan');
-    Route::post('news','NewsAPI@store'); //add news
-    Route::put('news/{id}','NewsAPI@update'); //update news
-    Route::delete('news/{id}','NewsAPI@destroy'); //delete news
-    Route::get('search', 'APIController@search');
+    Route::get('news/all', 'APIController@getAllNewsbyProjectAndStatus'); //get news by project id and status
+    Route::get('news/{id}','APIController@getNewsById'); //get a news *
+    Route::post('news','APIController@addNews'); //add news *
+    Route::put('news/{id}','APIController@updateNews'); //update news *
+    Route::delete('news/{id}','APIController@deleteNewsById'); //delete news
+    Route::get('search', 'APIController@searchNewsByTitle'); //search news by title
 });
 
 
-Route::get('languages', 'LanguagesAPI@index');
-
-
-Route::get('projects', 'APIController@getListProject');
-Route::get('medias', 'APIController@getListMedia');
-Route::get('categories', 'APIController@getListCategories');
-
-Route::get('languages', 'APIController@getAllLanguages');
-Route::get('categories','APIController@getAllCategories');
-Route::get('medias','APIController@getAllMedias');
+Route::get('projects', 'APIController@getListProjects'); //get All Projects
+Route::get('medias', 'APIController@getListMedias'); //get All Medias
+Route::get('languages', 'APIController@getListLanguages'); //get All Languages
+Route::get('categories','APIController@getListCategories'); //get All Categories
