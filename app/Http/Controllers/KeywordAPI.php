@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Keyword;
 use Illuminate\Http\Request;
 
-class CategoriesAPI extends Controller
+class KeywordAPI extends Controller
 {
-
     public function index()
     {
         //This function is used to get aall news
