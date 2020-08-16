@@ -8,7 +8,7 @@ class News extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','title','desc','extract','area','created','media_id','date','categories','lang_id','project_id','image'
+        'id','title','desc','content','area','created','media_id','date','categories','lang_id','project_id','image'
     ];
 
     public function language(){
