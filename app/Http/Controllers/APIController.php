@@ -8,6 +8,8 @@ use App\Media;
 use App\Project;
 use App\Statuses;
 use App\News;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -260,6 +262,23 @@ class APIController extends Controller
         $result = Language::find($id);
 
         if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function login(Request $request){
+        $email = $request->email;
+        $password = $request->input('password');
+
+        $result = Auth::attempt(array('email' => $email, 'password' => $password));
+
+        if ($result) {
+            $result = User::where('email', $email)->first();
             $data['code'] = 200;
             $data['result'] = $result;
         } else {

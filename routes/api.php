@@ -29,6 +29,7 @@ Route::group(['middleware'], function () {
 });
 
 
+Route::post('login', 'APIController@login'); 
 Route::get('projects', 'APIController@getListProjects'); //get All Projects
 Route::get('medias', 'APIController@getListMedias'); //get All Medias
 Route::get('language/{id}', 'APIController@getLanguage'); //get an Language
