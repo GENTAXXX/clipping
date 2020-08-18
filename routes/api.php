@@ -28,7 +28,12 @@ Route::group(['middleware'], function () {
     Route::get('count', 'APIController@countNews'); //count news
 });
 
+<<<<<<< HEAD
 Route::post('login', 'APIController@login');
+=======
+
+Route::post('login', 'APIController@login'); 
+>>>>>>> 07fa5cf290d072a0b281825c395e6e8b929a238d
 Route::get('projects', 'APIController@getListProjects'); //get All Projects
 Route::get('medias', 'APIController@getListMedias'); //get All Medias
 Route::get('language/{id}', 'APIController@getLanguage'); //get an Language
