@@ -25,10 +25,12 @@ Route::group(['middleware'], function () {
     Route::put('news/{id}','APIController@updateNews'); //update news *
     Route::delete('news/{id}','APIController@deleteNewsById'); //delete news
     Route::get('search', 'APIController@searchNewsByTitle'); //search news by title
+    Route::get('count', 'APIController@countNews'); //count news
 });
 
-
+Route::post('login', 'APIController@login');
 Route::get('projects', 'APIController@getListProjects'); //get All Projects
 Route::get('medias', 'APIController@getListMedias'); //get All Medias
+Route::get('language/{id}', 'APIController@getLanguage'); //get an Language
 Route::get('languages', 'APIController@getListLanguages'); //get All Languages
-Route::get('categories','APIController@getListCategories'); //get All Categories
+Route::get('categories', 'APIController@getListCategories'); //get All Categories
