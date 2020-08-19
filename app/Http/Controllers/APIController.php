@@ -77,7 +77,6 @@ class APIController extends Controller
         return response($data);
     }
 
-
     public function addNews(Request $request)
     {
         //This function is used to store a news
@@ -92,8 +91,13 @@ class APIController extends Controller
             'categories' => 'required',
             'lang_id' => 'required',
             'project_id' => 'required',
-            'image' => 'required'
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        $image = $request->file('image');
+        $name = time()."_".$image->getClientOriginalName();
+        $destination = 'data_file';
+        $image->move($destination, $name);
 
         $news = News::create($request->all());
 
@@ -314,4 +318,25 @@ class APIController extends Controller
         }
         return response()->json($data);
     }
+
+    public function upload(){
+        $result = News::get();
+        return view('upload',['news' => $result]);
+    }
+/*     public function uploadProses(Request $request){
+        $this->validate($request, [
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $image = $request->file('image');
+        $name = time()."_".$image->getClientOriginalName();
+        $destination = 'data_file';
+        $image->move($destination, $name);
+
+        News::create([
+            'image' => $name
+        ]);
+
+        return redirect()->back();
+    } */
 }
