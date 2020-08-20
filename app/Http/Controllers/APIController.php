@@ -96,6 +96,10 @@ class APIController extends Controller
         $name = time()."_".$image->getClientOriginalName();
         $destination = 'data_file';
         $image->move($destination, $name);
+        $request = new Request($request->all());
+        $request->merge([
+            'image' => $name
+        ]);
 
         $news = News::create($request->all());
 
@@ -321,20 +325,21 @@ class APIController extends Controller
         $result = News::get();
         return view('upload',['news' => $result]);
     }
-/*     public function uploadProses(Request $request){
-        $this->validate($request, [
-            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
-        ]);
 
-        $image = $request->file('image');
-        $name = time()."_".$image->getClientOriginalName();
-        $destination = 'data_file';
-        $image->move($destination, $name);
+    // public function uploadProses(Request $request){
+    //     $this->validate($request, [
+    //         'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
+    //     ]);
 
-        News::create([
-            'image' => $name
-        ]);
+    //     $image = $request->file('image');
+    //     $name = time()."_".$image->getClientOriginalName();
+    //     $destination = 'data_file';
+    //     $image->move($destination, $name);
 
-        return redirect()->back();
-    } */
+    //     // News::create([
+    //     //     'image' => $name
+    //     // ]);
+
+    //     return redirect()->back();
+    // } 
 }
