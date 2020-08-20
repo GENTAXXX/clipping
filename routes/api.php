@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['middleware'], function () {
     Route::get('news/all', 'APIController@getAllNewsbyProjectAndStatus'); //get news by project id and status
     Route::get('news/{id}','APIController@getNewsById'); //get a news *
+    Route::get('upload', 'APIController@upload');
     Route::post('news','APIController@addNews'); //add news *
     Route::put('news/{id}','APIController@updateNews'); //update news *
     Route::delete('news/{id}','APIController@deleteNewsById'); //delete news
@@ -29,9 +30,10 @@ Route::group(['middleware'], function () {
 });
 
 
+// Route::post('upload/proses', 'APIController@uploadProses');
 Route::post('login', 'APIController@login'); 
 Route::get('projects', 'APIController@getListProjects'); //get All Projects
 Route::get('medias', 'APIController@getListMedias'); //get All Medias
 Route::get('language/{id}', 'APIController@getLanguage'); //get an Language
 Route::get('languages', 'APIController@getListLanguages'); //get All Languages
-Route::get('categories','APIController@getListCategories'); //get All Categories
+Route::get('categories', 'APIController@getListCategories'); //get All Categories

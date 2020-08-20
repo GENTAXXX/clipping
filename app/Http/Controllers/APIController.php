@@ -16,22 +16,23 @@ use Illuminate\Support\Facades\DB;
 class APIController extends Controller
 {
 
-    public function getAllNewsbyProjectAndStatus(Request $request){
+    public function getAllNewsbyProjectAndStatus(Request $request)
+    {
 
         $project_id = $request->project_id;
         $status = $request->status;
 
-        if($status){
-            $result = News::join('statuses', 'news.id','=','statuses.news_id')
-            ->join('medias', 'news.media_id','=','medias.id')
+        if ($status) {
+            $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
+            ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('status', $status)
-            ->where('project_id', $project_id)
-            ->get();
+                ->where('project_id', $project_id)
+                ->get();
         } else {
-            $result = News::join('statuses', 'news.id','=','statuses.news_id')
-            ->join('medias', 'news.media_id','=','medias.id')
+            $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
+            ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('project_id', $project_id)
-            ->get();
+                ->get();
         }
 
         if ($result) {
@@ -44,7 +45,6 @@ class APIController extends Controller
 
         return response($data);
     }
-    
     public function getCount($project_id, $status){
         return News::join('statuses', 'news.id','=','statuses.news_id')
         ->where('status', $status)
@@ -52,7 +52,8 @@ class APIController extends Controller
         ->count();
     }
 
-    public function countNews(Request $request){
+    public function countNews(Request $request)
+    {
         $project_id = $request->project_id;
 
         $result['all'] = News::where('project_id', $project_id)
@@ -74,7 +75,8 @@ class APIController extends Controller
         return response($data);
     }
 
-    public function addNews(Request $request){
+    public function addNews(Request $request)
+    {
         //This function is used to store a news
         $request->validate([
             'title' => 'required',
@@ -87,8 +89,13 @@ class APIController extends Controller
             'categories' => 'required',
             'lang_id' => 'required',
             'project_id' => 'required',
-            'image' => 'required'
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
         ]);
+
+        $image = $request->file('image');
+        $name = time()."_".$image->getClientOriginalName();
+        $destination = 'data_file';
+        $image->move($destination, $name);
 
         $news = News::create($request->all());
 
@@ -97,7 +104,7 @@ class APIController extends Controller
         $statuses->news_id = $news->id;
         $statuses->user_id = 1;
         $statuses->save();
-	
+
         if ($news) {
             $data['code'] = 200;
             $data['result'] = $news;
@@ -111,16 +118,38 @@ class APIController extends Controller
     public function updateNews(Request $request, $id){
         //This function is used to update a news by id
 
-        $news = News::where('news_id', $id)->first();
+        // $request->validate([
+        //     'news_title' => 'required',
+        //     'news_desc' => 'required',
+        //     'news_extract' => 'required',
+        //     'news_status' => 'required',
+        //     'news_area' => 'required',
+        //     'news_approval' => 'required',
+        //     'news_approval_date' => 'required',
+        //     'news_created' => 'required',
+        //     'media_id' => 'required',
+        //     'news_date' => 'required',
+        //     'categories' => 'required',
+        //     'keywords' => 'required',
+        //     'lang_id' => 'required',
+        //     'verificator_id' => 'required',
+        //     'creator_id' => 'required',
+        //     'image' => 'required',
+        // ]);
+
+        // $result = News::update($request->all());
+
+        $news = News::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
         $news->title           = $request->title;
         $news->desc            = $request->desc;
         $news->content         = $request->content;
         $news->area            = $request->area;
+        $news->content         = $request->content;
         $news->scan            = $request->scan;
         $news->created         = $request->created;
-        $news->media_id        = $request->media_id;
         $news->date            = $request->date;
+        $news->media_id        = $request->media_id;
         $news->categories      = $request->categories;
         $news->lang_id         = $request->lang_id;
         $news->project_id      = $request->project_id;
@@ -151,25 +180,26 @@ class APIController extends Controller
         return response($data);
     }
 
-    public function searchNewsByTitle(Request $request){
+    public function searchNewsByTitle(Request $request)
+    {
 
         $project_id = $request->project_id;
         $status = $request->status;
         $search = $request->search;
 
-        if($status){
-            $result = News::join('statuses', 'news.id','=','statuses.news_id')
-            ->join('medias', 'news.media_id','=','medias.id')
+        if ($status) {
+            $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
+            ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('status', $status)
-            ->where('project_id', $project_id)
-            ->where('title','like',"%".$search."%")
-            ->get();
+                ->where('project_id', $project_id)
+                ->where('title', 'like', "%" . $search . "%")
+                ->get();
         } else {
-            $result = News::join('statuses', 'news.id','=','statuses.news_id')
-            ->join('medias', 'news.media_id','=','medias.id')
+            $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
+            ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('project_id', $project_id)
-            ->where('title','like',"%".$search."%")
-            ->get(); 
+                ->where('title', 'like', "%" . $search . "%")
+                ->get();
         }
         // $result = Statuses::with('news')->whereHas('news', function($q) use($status, $project_id, $search){
         //     $q->where('status', $status)->where("news.project_id", $project_id)->where('news.title','like',"%".$search."%");
@@ -254,7 +284,8 @@ class APIController extends Controller
         return response()->json($data);
     }
 
-    public function getLanguage($id){
+    public function getLanguage($id)
+    {
 
         $result = Language::find($id);
 
@@ -268,7 +299,8 @@ class APIController extends Controller
         return response()->json($data);
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         $email = $request->email;
         $password = $request->input('password');
 
@@ -284,4 +316,25 @@ class APIController extends Controller
         }
         return response()->json($data);
     }
+
+    public function upload(){
+        $result = News::get();
+        return view('upload',['news' => $result]);
+    }
+/*     public function uploadProses(Request $request){
+        $this->validate($request, [
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $image = $request->file('image');
+        $name = time()."_".$image->getClientOriginalName();
+        $destination = 'data_file';
+        $image->move($destination, $name);
+
+        News::create([
+            'image' => $name
+        ]);
+
+        return redirect()->back();
+    } */
 }

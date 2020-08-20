@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 
 class MediasAPI extends Controller
 {
-    
+
     public function index()
     {
-        //This function is used to get aall news
         $result = Media::all();
-	    if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
@@ -21,39 +20,40 @@ class MediasAPI extends Controller
         }
         return response()->json($data);
     }
-    
+
     public function create()
     {
-        return view('news.create');
+        return view('media.create');
     }
-    
+
     public function store(Request $request)
     {
         //This function is used to store a news
         $request->validate([
-            'lang_name' => 'required',
-            'lang_code' => 'required'
+            'name' => 'required',
+            'proviences_id' => 'required',
+            'regencies_id' => 'required'
+
         ]);
 
-        $lang = Language::create($request->all());
+        $media = Media::create($request->all());
 
-        if($lang){
+        if ($media) {
             $data['code'] = 200;
-            $data['result'] = $lang;
+            $data['result'] = $media;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
         return response($data);
-    
     }
-    
+
     public function show($id)
     {
         //This function is used to get a news by id
-        $result = Language::find($id);
+        $result = Media::find($id);
 
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
@@ -62,12 +62,12 @@ class MediasAPI extends Controller
         }
         return response()->json($data);
     }
-    
-    public function edit(Language $lang)
+
+    public function edit(Media $media)
     {
-        return view('news.edit', compact('languages'));
+        return view('medias.edit', compact('medias'));
     }
-    
+
     public function update(Request $request, $id)
     {
         //This function is used to update a news by id
@@ -93,29 +93,30 @@ class MediasAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $lang = Language::where('lang_id',$id)->first();
+        $media = Media::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $lang->news_title           = $request->news_title;
-        $lang->news_desc            = $request->news_desc;
-        $lang->save();
+        $media->name              = $request->name;
+        $media->proviences_id     = $request->proviences_id;
+        $media->regencies_id      = $request->regencies_id;
+        $media->save();
 
-        if($lang){
+        if ($media) {
             $data['code'] = 200;
-            $data['result'] = $lang;
+            $data['result'] = $media;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
         return response()->json($data);
     }
-    
+
     public function destroy($id)
     {
         //This function is used to delete a news by id
-        $result = Language::find($id);
+        $result = Media::find($id);
         $result->delete();
 
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
