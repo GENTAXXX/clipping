@@ -45,13 +45,11 @@ class APIController extends Controller
 
         return response($data);
     }
-
-    public function getCount($project_id, $status)
-    {
-        return News::join('statuses', 'news.id', '=', 'statuses.news_id')
+    public function getCount($project_id, $status){
+        return News::join('statuses', 'news.id','=','statuses.news_id')
         ->where('status', $status)
-            ->where('project_id', $project_id)
-            ->count();
+        ->where('project_id', $project_id)
+        ->count();
     }
 
     public function countNews(Request $request)
@@ -59,7 +57,7 @@ class APIController extends Controller
         $project_id = $request->project_id;
 
         $result['all'] = News::where('project_id', $project_id)
-            ->count();
+        ->count();
 
         $result['draft'] = $this->getCount($project_id, 'Draft');
         $result['proposed'] = $this->getCount($project_id, 'Diajukan');
