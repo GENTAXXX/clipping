@@ -23,7 +23,7 @@
                 </div>
                 @endif
 
-                <form action="/news" method="POST" enctype="multipart/form-data">
+                <form action="/api/news" method="POST" enctype="multipart/form-data">
                     {{ csrf_field() }}
 
                     <div class="form-group">
@@ -32,8 +32,53 @@
                     </div>
 
                     <div class="form-group">
-                        <b>Keterangan</b>
-                        <textarea class="form-control" name="keterangan"></textarea>
+                        <b>Title</b>
+                        <input class="form-control" name="title"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Desc</b>
+                        <input class="form-control" name="desc"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Content</b>
+                        <input class="form-control" name="content"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Area</b>
+                        <input class="form-control" name="area"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Created</b>
+                        <input class="form-control" type="date" name="created"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Media Id</b>
+                        <input class="form-control" type="number" name="media_id"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Date</b>
+                        <input class="form-control" type="date" name="date"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Categories</b>
+                        <input class="form-control" name="categories"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Language Id</b>
+                        <input class="form-control" type="number" name="lang_id"/>
+                    </div>
+
+                    <div class="form-group">
+                        <b>Project Id</b>
+                        <input class="form-control" type="number" name="project_id"/>
                     </div>
 
                     <input type="submit" value="Upload" class="btn btn-primary">
@@ -50,10 +95,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($image as $g)
+                        @foreach($news as $g)
                         <tr>
                             <td><img width="150px" src="{{ url('/data_file/'.$g->image) }}"></td>
-                            <td>{{$g->keterangan}}</td>
+                            <td>{{$g->title}}</td>
                             <td><a class="btn btn-danger" href="/upload/hapus/{{ $g->id }}">HAPUS</a></td>
                         </tr>
                         @endforeach
