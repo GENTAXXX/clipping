@@ -17,7 +17,7 @@ class ProjectAPI extends Controller
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return response()->json($data);
+        return view('project.index');
     }
 
     public function create()
@@ -63,7 +63,7 @@ class ProjectAPI extends Controller
 
     public function edit(Project $project)
     {
-        return view('news.edit', compact('news'));
+        return view('project.edit', compact('news'));
     }
 
     public function update(Request $request, $id)

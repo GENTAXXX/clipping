@@ -2,71 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\News;
-use App\Statuses;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class NewsAPI extends Controller
+class UserController extends Controller
 {
-    
     public function index()
     {
         //This function is used to get aall news
-        $result = News::all();
-        if($result){
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return view('news.index');
-    }
-    
-    public function create()
-    {
-        return view('news.create');
-    }
-    
-    public function store(Request $request)
-    {
-        //This function is used to store a news
-        $request->validate([
-            'title' => 'required',
-            'desc' => 'required',
-            'content' => 'required',
-            'area' => 'required',
-            'scan' => 'required',
-            'created' => 'required',
-            'media_id' => 'required',
-            'date' => 'required',
-            'categories' => 'required',
-            'keywords' => 'required',
-            'lang_id' => 'required',
-            'project_id' => 'required',
-            'image' => 'required'
-        ]);
-
-        $news = News::create($request->all());
-
-        if($news){
-            $data['code'] = 200;
-            $data['result'] = $news;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return response($data);
-    
-    }
-    
-    public function show($id)
-    {
-        //This function is used to get a news by id
-        $result = News::find($id);
-
-        if($result){
+        $result = User::all();
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {
@@ -75,12 +20,57 @@ class NewsAPI extends Controller
         }
         return response()->json($data);
     }
-    
-    public function edit(News $news)
+
+    public function create()
     {
-        return view('news.edit', compact('news'));
+        return view('user.create');
     }
-    
+
+    public function store(Request $request)
+    {
+        //This function is used to store a news
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'image' => 'required',
+            'role' => 'required',
+            'organization' => 'required',
+            'phone' => 'required'
+        ]);
+
+        $user = User::create($request->all());
+
+        if ($user) {
+            $data['code'] = 200;
+            $data['result'] = $user;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response($data);
+    }
+
+    public function show($id)
+    {
+        //This function is used to get a news by id
+        $result = User::find($id);
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response()->json($data);
+    }
+
+    public function edit(User $user)
+    {
+        return view('user.edit', compact('user'));
+    }
+
     public function update(Request $request, $id)
     {
         //This function is used to update a news by id
@@ -96,7 +86,7 @@ class NewsAPI extends Controller
         //     'news_created' => 'required',
         //     'media_id' => 'required',
         //     'news_date' => 'required',
-        //     'categories' => 'required',
+        //     'user' => 'required',
         //     'keywords' => 'required',
         //     'lang_id' => 'required',
         //     'verificator_id' => 'required',
@@ -106,39 +96,34 @@ class NewsAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $news = News::where('id',$id)->first();
+        $user = User::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $news->title           = $request->title;
-        $news->desc            = $request->desc;
-        $news->content         = $request->content;
-        $news->area            = $request->area;
-        $news->scan            = $request->scan;
-        $news->created         = $request->created;
-        $news->media_id        = $request->media_id;
-        $news->date            = $request->date;
-        $news->categories      = $request->categories;
-        $news->lang_id         = $request->lang_id;
-        $news->project_id      = $request->project_id;
-        $news->image           = $request->image;
-        $news->save();
+        $user->name             = $request->name;
+        $user->email            = $request->email;
+        $user->password         = $request->password;
+        $user->image            = $request->image;
+        $user->role             = $request->role;
+        $user->organization     = $request->organization;
+        $user->phone            = $request->phone;
+        $user->save();
 
-        if($news){
+        if ($user) {
             $data['code'] = 200;
-            $data['result'] = $news;
+            $data['result'] = $user;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
         return response()->json($data);
     }
-    
+
     public function destroy($id)
     {
         //This function is used to delete a news by id
-        $result = News::find($id);
+        $result = User::find($id);
         $result->delete();
 
-        if($result){
+        if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
         } else {

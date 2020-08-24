@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Tutorial Laravel #30 : Membuat Upload File Dengan Laravel</title>
+    <title>Upload File</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 </head>
@@ -11,7 +11,7 @@
     <div class="row">
         <div class="container">
 
-            <h2 class="text-center my-5">Tutorial Laravel #30 : Membuat Upload File Dengan Laravel</h2>
+            <h2 class="text-center my-5">Upload File</h2>
 
             <div class="col-lg-8 mx-auto my-5">
 
@@ -33,52 +33,57 @@
 
                     <div class="form-group">
                         <b>Title</b>
-                        <input class="form-control" name="title"/>
+                        <input class="form-control" name="title" />
                     </div>
 
                     <div class="form-group">
                         <b>Desc</b>
-                        <input class="form-control" name="desc"/>
+                        <input class="form-control" name="desc" />
                     </div>
 
                     <div class="form-group">
                         <b>Content</b>
-                        <input class="form-control" name="content"/>
+                        <input class="form-control" name="content" />
+                    </div>
+
+                    <div class="form-group">
+                        <b>Scan</b>
+                        <input class="form-control" name="scan" />
                     </div>
 
                     <div class="form-group">
                         <b>Area</b>
-                        <input class="form-control" name="area"/>
+                        <input class="form-control" name="area" />
                     </div>
 
                     <div class="form-group">
                         <b>Created</b>
-                        <input class="form-control" type="date" name="created"/>
+                        <input class="form-control" type="date" name="created" />
                     </div>
 
                     <div class="form-group">
                         <b>Media Id</b>
-                        <input class="form-control" type="number" name="media_id"/>
+                        <input class="form-control" type="number" name="media_id" />
                     </div>
 
                     <div class="form-group">
                         <b>Date</b>
-                        <input class="form-control" type="date" name="date"/>
+                        <input class="form-control" type="date" name="date" />
                     </div>
 
                     <div class="form-group">
                         <b>Categories</b>
-                        <input class="form-control" name="categories"/>
+                        <input class="form-control" name="categories" />
                     </div>
 
                     <div class="form-group">
                         <b>Language Id</b>
-                        <input class="form-control" type="number" name="lang_id"/>
+                        <input class="form-control" type="number" name="lang_id" />
                     </div>
 
                     <div class="form-group">
                         <b>Project Id</b>
-                        <input class="form-control" type="number" name="project_id"/>
+                        <input class="form-control" type="number" name="project_id" />
                     </div>
 
                     <input type="submit" value="Upload" class="btn btn-primary">

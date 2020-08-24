@@ -19,20 +19,20 @@ class CategoriesAPI extends Controller
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return response()->json($data);
+        return view('categoties.index');
     }
 
     public function create()
     {
-        return view('news.create');
+        return view('categories.create');
     }
 
     public function store(Request $request)
     {
         //This function is used to store a news
         $request->validate([
-            'cat_name' => 'required',
-            'cat_parent' => 'required'
+            'name' => 'required',
+            'parent' => 'required'
         ]);
 
         $cat = Category::create($request->all());
@@ -64,7 +64,7 @@ class CategoriesAPI extends Controller
 
     public function edit(Category $cat)
     {
-        return view('news.edit', compact('categories'));
+        return view('categories.edit', compact('categories'));
     }
 
     public function update(Request $request, $id)
@@ -92,10 +92,10 @@ class CategoriesAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $cat = Category::where('cat_id', $id)->first();
+        $cat = Category::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $cat->cat_name           = $request->cat_name;
-        $cat->cat_parent           = $request->cat_parent;
+        $cat->name             = $request->name;
+        $cat->parent           = $request->parent;
         $cat->save();
 
         if ($cat) {

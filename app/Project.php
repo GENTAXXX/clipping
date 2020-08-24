@@ -8,11 +8,11 @@ class Project extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','name','year','role_id'
+        'id','name','desc'
     ];
 
-    public function role()
+    public function news()
     {
-        return $this->hasOne('App\Role', 'role_id', 'role_id');
+        return $this->hasMany('App\News');
     }
 }

@@ -13,6 +13,6 @@ class Category extends Model
 
     public function news()
     {
-        return $this->hasOne('App\News');
+        return $this->hasOne('App\News_Categories');
     }
 }

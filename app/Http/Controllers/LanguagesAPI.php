@@ -93,10 +93,10 @@ class LanguagesAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $lang = Language::where('lang_id',$id)->first();
+        $lang = Language::where('id',$id)->first();
         // $news->news_id              = $request->news_id;
-        $lang->news_title           = $request->news_title;
-        $lang->news_desc            = $request->news_desc;
+        $lang->name           = $request->name;
+        $lang->code            = $request->code;
         $lang->save();
 
         if($lang){
