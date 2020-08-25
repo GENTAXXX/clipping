@@ -18,7 +18,7 @@ class MediasAPI extends Controller
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return response()->json($data);
+        return view('media.index');
     }
 
     public function create()
@@ -65,7 +65,7 @@ class MediasAPI extends Controller
 
     public function edit(Media $media)
     {
-        return view('medias.edit', compact('medias'));
+        return view('media.edit', compact('medias'));
     }
 
     public function update(Request $request, $id)

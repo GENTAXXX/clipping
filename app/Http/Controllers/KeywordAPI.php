@@ -23,14 +23,14 @@ class KeywordAPI extends Controller
 
     public function create()
     {
-        return view('news.create');
+        return view('keyword.create');
     }
 
     public function store(Request $request)
     {
         //This function is used to store a news
         $request->validate([
-            'keyword_name' => 'required'
+            'name' => 'required'
         ]);
 
         $keyword = Keyword::create($request->all());
@@ -90,9 +90,9 @@ class KeywordAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $keyword = Keyword::where('keyword_id', $id)->first();
+        $keyword = Keyword::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $keyword->keyword_name           = $request->keyword_name;
+        $keyword->name           = $request->name;
         $keyword->save();
 
         if ($keyword) {

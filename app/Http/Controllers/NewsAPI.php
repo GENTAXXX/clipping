@@ -21,7 +21,7 @@ class NewsAPI extends Controller
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return response()->json($data);
+        return view('news.index');
     }
     
     public function create()
@@ -106,7 +106,7 @@ class NewsAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $news = News::where('news_id',$id)->first();
+        $news = News::where('id',$id)->first();
         // $news->news_id              = $request->news_id;
         $news->title           = $request->title;
         $news->desc            = $request->desc;

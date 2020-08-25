@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Project;
-use App\Users_Roles;
+use App\User;
 use Illuminate\Http\Request;
 
-class ProjectAPI extends Controller
+class UserController extends Controller
 {
     public function index()
     {
-        $result = Project::all();
+        //This function is used to get aall news
+        $result = User::all();
         if ($result) {
             $data['code'] = 200;
             $data['result'] = $result;
@@ -18,20 +18,12 @@ class ProjectAPI extends Controller
             $data['code'] = 500;
             $data['result'] = 'Error';
         }
-        return view('project.index');
+        return response()->json($data);
     }
 
     public function create()
     {
-        $result = Users_Roles::create();
-        if ($result) {
-            $data['code'] = 200;
-            $data['result'] = $result;
-        } else {
-            $data['code'] = 500;
-            $data['result'] = 'Error';
-        }
-        return view('project.create');
+        return view('user.create');
     }
 
     public function store(Request $request)
@@ -39,21 +31,19 @@ class ProjectAPI extends Controller
         //This function is used to store a news
         $request->validate([
             'name' => 'required',
-            'desc' => 'required'
-            
+            'email' => 'required',
+            'password' => 'required',
+            'image' => 'required',
+            'role' => 'required',
+            'organization' => 'required',
+            'phone' => 'required'
         ]);
 
-        $project = Project::create($request->all());
+        $user = User::create($request->all());
 
-        $role = new Users_Roles();
-        $role->project_id = $project->id;
-        $role->user_id = $request->user_id;
-        $role->role_id = $request->role_id;
-        $role->save();
-
-        if ($project) {
+        if ($user) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $user;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -64,7 +54,7 @@ class ProjectAPI extends Controller
     public function show($id)
     {
         //This function is used to get a news by id
-        $result = Project::find($id);
+        $result = User::find($id);
 
         if ($result) {
             $data['code'] = 200;
@@ -76,9 +66,9 @@ class ProjectAPI extends Controller
         return response()->json($data);
     }
 
-    public function edit(Project $project)
+    public function edit(User $user)
     {
-        return view('project.edit', compact('news'));
+        return view('user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
@@ -96,7 +86,7 @@ class ProjectAPI extends Controller
         //     'news_created' => 'required',
         //     'media_id' => 'required',
         //     'news_date' => 'required',
-        //     'categories' => 'required',
+        //     'user' => 'required',
         //     'keywords' => 'required',
         //     'lang_id' => 'required',
         //     'verificator_id' => 'required',
@@ -106,15 +96,20 @@ class ProjectAPI extends Controller
 
         // $result = News::update($request->all());
 
-        $project = Project::where('id', $id)->first();
+        $user = User::where('id', $id)->first();
         // $news->news_id              = $request->news_id;
-        $project->name          = $request->name;
-        $project->desc          = $request->desc;
-        $project->save();
+        $user->name             = $request->name;
+        $user->email            = $request->email;
+        $user->password         = $request->password;
+        $user->image            = $request->image;
+        $user->role             = $request->role;
+        $user->organization     = $request->organization;
+        $user->phone            = $request->phone;
+        $user->save();
 
-        if ($project) {
+        if ($user) {
             $data['code'] = 200;
-            $data['result'] = $project;
+            $data['result'] = $user;
         } else {
             $data['code'] = 500;
             $data['result'] = 'Error';
@@ -125,7 +120,7 @@ class ProjectAPI extends Controller
     public function destroy($id)
     {
         //This function is used to delete a news by id
-        $result = Project::find($id);
+        $result = User::find($id);
         $result->delete();
 
         if ($result) {

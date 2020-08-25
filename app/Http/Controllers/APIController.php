@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Keyword;
 use App\Language;
 use App\Media;
 use App\Project;
 use App\Statuses;
 use App\News;
+use App\News_Categories;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -109,6 +111,16 @@ class APIController extends Controller
         $statuses->user_id = 1;
         $statuses->save();
 
+        // $ncat = new News_Categories();
+        // $ncat->news_id = $news->id;
+        // $ncat->cat_id = $request->cat_id;
+        // $ncat->save();
+
+        // $keyword = new Keyword();
+        // $keyword->news_id = $news->id;
+        // $keyword->name = $request->name;
+        // $keyword->save();
+
         if ($news) {
             $data['code'] = 200;
             $data['result'] = $news;
@@ -171,8 +183,8 @@ class APIController extends Controller
     }
 
     public function deleteNewsById($id){
-        $result = News::find($id);
-        $result->delete();
+
+        $result = News::where('id', $id)->delete();
 
         if ($result) {
             $data['code'] = 200;

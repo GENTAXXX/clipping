@@ -4,12 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Keyword extends Model
+class News_Categories extends Model
 {
     protected $primaryKey = 'id';
     protected $fillable = [
-        'id','name','news_id'
+        'id', 'cat_id', 'news_id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 
     public function news()
     {

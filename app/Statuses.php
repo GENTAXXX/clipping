@@ -13,7 +13,7 @@ class Statuses extends Model
 
     public function news()
     {
-        return $this->hasOne('App\News', 'id', 'news_id');
+        return $this->belongsTo('App\News', 'news_id', 'news_id');
     }
 
     public function users()
