@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\Users_Roles;
 use Illuminate\Http\Request;
 
 class ProjectAPI extends Controller
@@ -22,6 +23,14 @@ class ProjectAPI extends Controller
 
     public function create()
     {
+        $result = Users_Roles::create();
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
         return view('project.create');
     }
 
@@ -35,6 +44,12 @@ class ProjectAPI extends Controller
         ]);
 
         $project = Project::create($request->all());
+
+        $role = new Users_Roles();
+        $role->project_id = $project->id;
+        $role->user_id = $request->user_id;
+        $role->role_id = $request->role_id;
+        $role->save();
 
         if ($project) {
             $data['code'] = 200;

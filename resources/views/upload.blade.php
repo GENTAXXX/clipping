@@ -95,7 +95,7 @@
                     <thead>
                         <tr>
                             <th width="1%">File</th>
-                            <th>Keterangan</th>
+                            <th>Title</th>
                             <th width="1%">OPSI</th>
                         </tr>
                     </thead>
