@@ -26,6 +26,7 @@ Route::group(['middleware'], function () {
     Route::delete('news/{id}','APIController@deleteNewsById'); //delete news
     Route::get('search', 'APIController@searchNewsByTitle'); //search news by title
     Route::get('count', 'APIController@countNews'); //count news
+    Route::put('status/{id}', 'APIController@updateStatus');
 });
 
 

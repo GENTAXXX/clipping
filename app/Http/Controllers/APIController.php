@@ -106,20 +106,20 @@ class APIController extends Controller
         $news = News::create($request->all());
 
         $statuses = new Statuses();
-        $statuses->status = "Draft";
+        $statuses->status = $request->status;
         $statuses->news_id = $news->id;
-        $statuses->user_id = 1;
+        $statuses->user_id = $request->user_id;
         $statuses->save();
 
-        // $ncat = new News_Categories();
-        // $ncat->news_id = $news->id;
-        // $ncat->cat_id = $request->cat_id;
-        // $ncat->save();
+        $ncat = new News_Categories();
+        $ncat->news_id = $news->id;
+        $ncat->cat_id = $request->cat_id;
+        $ncat->save();
 
-        // $keyword = new Keyword();
-        // $keyword->news_id = $news->id;
-        // $keyword->name = $request->name;
-        // $keyword->save();
+        $keyword = new Keyword();
+        $keyword->news_id = $news->id;
+        $keyword->name = $request->name;
+        $keyword->save();
 
         if ($news) {
             $data['code'] = 200;
@@ -172,6 +172,7 @@ class APIController extends Controller
         $news->image           = $request->image;
         $news->save();
 
+
         if ($news) {
             $data['code'] = 200;
             $data['result'] = $news;
@@ -180,6 +181,24 @@ class APIController extends Controller
             $data['result'] = 'Error';
         }
         return response()->json($data);
+    }
+
+    public function updateStatus(Request $request, $id){
+
+        $result = Statuses::where('news_id', $id)->update([
+            'status' => $request->status,
+            'user_id' => $request->user_id
+        ]);
+
+        if ($result) {
+            $data['code'] = 200;
+            $data['result'] = $result;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response($data);
+
     }
 
     public function deleteNewsById($id){
