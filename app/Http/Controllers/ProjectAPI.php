@@ -8,6 +8,30 @@ use Illuminate\Http\Request;
 
 class ProjectAPI extends Controller
 {
+    public function addContributorAndEditor(Request $request){
+
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        $role = Users_Roles::create($request->all());
+
+        $UserRole = new Users_Roles();
+        $UserRole->project_id = $request->project_id;
+        $UserRole->user_id = $request->user_id;
+        $UserRole->role_id = $request->role_id;
+        $UserRole->save();
+
+        if ($role) {
+            $data['code'] = 200;
+            $data['result'] = $role;
+        } else {
+            $data['code'] = 500;
+            $data['result'] = 'Error';
+        }
+        return response($data);
+    }
+
     public function index()
     {
         $result = Project::all();
@@ -45,11 +69,11 @@ class ProjectAPI extends Controller
 
         $project = Project::create($request->all());
 
-        $role = new Users_Roles();
-        $role->project_id = $project->id;
-        $role->user_id = $request->user_id;
-        $role->role_id = $request->role_id;
-        $role->save();
+        $UserRole = new Users_Roles();
+        $UserRole->project_id = $project->id;
+        $UserRole->user_id = $request->user_id;
+        $UserRole->role_id = $request->role_id;
+        $UserRole->save();
 
         if ($project) {
             $data['code'] = 200;
