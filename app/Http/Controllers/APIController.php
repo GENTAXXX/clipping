@@ -108,7 +108,7 @@ class APIController extends Controller
         $statuses = new Statuses();
         $statuses->status = "Draft";
         $statuses->news_id = $news->id;
-        $statuses->user_id = 1;
+        $statuses->user_id = $request->user_id;
         $statuses->save();
 
         // $ncat = new News_Categories();
