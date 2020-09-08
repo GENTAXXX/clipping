@@ -18,6 +18,18 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('admin-page', function () {
+    return 'Halaman untuk Admin';
+})->middleware('role:admin')->name('admin.page');
+
+Route::get('contributor-page', function () {
+    return 'Halaman untuk Contributor';
+})->middleware('role:contributor')->name('contributor.page');
+
+Route::get('editor-page', function () {
+    return 'Halaman untuk Editor';
+})->middleware('role:editor')->name('editor.page');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('upload', 'APIController@upload');
 
@@ -62,3 +74,7 @@ Route::group(['middleware'], function () {
 });
 
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
