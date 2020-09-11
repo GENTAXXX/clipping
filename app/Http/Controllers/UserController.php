@@ -33,10 +33,18 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
-            'image' => 'required',
-            'role' => 'required',
+            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048',
             'organization' => 'required',
             'phone' => 'required'
+        ]);
+
+        $image = $request->file('image');
+        $name = time() . "_" . $image->getClientOriginalName();
+        $destination = 'user_file';
+        $image->move($destination, $name);
+        $request = new Request($request->all());
+        $request->merge([
+            'image' => $name
         ]);
 
         $user = User::create($request->all());
