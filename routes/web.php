@@ -72,9 +72,3 @@ Route::group(['middleware'], function () {
     Route::put('categories/{id}', 'CategoriesAPI@update');
     Route::delete('categories/{id}', 'CategoriesAPI@destroy');
 });
-
-
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
