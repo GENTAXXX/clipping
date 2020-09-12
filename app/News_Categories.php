@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class News_Categories extends Model
 {
     protected $primaryKey = 'id';
+    protected $table = 'news_categories';
     protected $fillable = [
         'id', 'cat_id', 'news_id'
     ];

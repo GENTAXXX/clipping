@@ -28,14 +28,24 @@ class APIController extends Controller
             $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
             ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('status', $status)
-                ->where('project_id', $project_id)
-                ->get();
+            ->where('project_id', $project_id)
+            ->get()
+            ->map(function ($result){
+                $result->image = url('data_file/'.$result->image);
+                return $result;
+            });
         } else {
             $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
             ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('project_id', $project_id)
-                ->get();
+            ->get()
+            ->map(function ($result){
+                $result->image = url('data_file/'.$result->image);
+                return $result;
+            });
         }
+
+//	$result['image'] = url('data_file/'.$result['image']);
 
         if ($result) {
             $data['code'] = 200;
@@ -104,21 +114,33 @@ class APIController extends Controller
         ]);
 
         $news = News::create($request->all());
+        
+        $categories = "";
+        $categoriesId = str_replace("[","",$request->categories); //menghilangkan [
+        $categoriesId = str_replace("]","",$categoriesId); //menghilangkan ]
+        $categoriesId = explode(",", $categoriesId); //memecah string jadi array of ids
+        foreach ($categoriesId as $key => $category) {
+            $cat = Category::find($category); //mencari kategori berdasar id nya
+            $categories = $categories.$cat->name.","; //memasukkan kategori ke var categories supaya hasilnya "politik, ekonomi,"
+
+            $ncat = new News_Categories(); //membuat obj ncat
+            $ncat->news_id = $news->id; 
+            $ncat->cat_id = $cat->id;
+            $ncat->save(); //menyimpan data category di table news categories
+        }
+        $newsUpdate = News::where('id', $news->id)->first();
+        $newsUpdate->categories = $categories; //mengupdate data categories pada table news
+        $newsUpdate->save();
 
         $statuses = new Statuses();
-        $statuses->status = $request->status;
+        $statuses->status = "Draft";
         $statuses->news_id = $news->id;
         $statuses->user_id = $request->user_id;
         $statuses->save();
 
-        $ncat = new News_Categories();
-        $ncat->news_id = $news->id;
-        $ncat->cat_id = $request->cat_id;
-        $ncat->save();
-
         $keyword = new Keyword();
         $keyword->news_id = $news->id;
-        $keyword->name = $request->name;
+        $keyword->name = $request->keywords;
         $keyword->save();
 
         if ($news) {
@@ -130,6 +152,18 @@ class APIController extends Controller
         }
         return response($data);
     }
+
+	public function getKeywordsByNewsId($id){
+		$result = Keyword::where("news_id",$id)->first();
+		if($result){
+			$data['code'] = 200;
+			$data['result'] = $result;
+		} else {
+			$data['code'] = 500;
+			$data['result'] = 'Error';
+		}
+		return response($data);
+	}
 
     public function updateNews(Request $request, $id){
         //This function is used to update a news by id
@@ -228,13 +262,21 @@ class APIController extends Controller
             ->where('status', $status)
                 ->where('project_id', $project_id)
                 ->where('title', 'like', "%" . $search . "%")
-                ->get();
+                ->get()
+                ->map(function ($result){
+                    $result->image = url('data_file/'.$result->image);
+                    return $result;
+                });
         } else {
             $result = News::join('statuses', 'news.id', '=', 'statuses.news_id')
             ->join('medias', 'news.media_id', '=', 'medias.id')
             ->where('project_id', $project_id)
                 ->where('title', 'like', "%" . $search . "%")
-                ->get();
+                ->get()
+                ->map(function ($result){
+                    $result->image = url('data_file/'.$result->image);
+                    return $result;
+                });
         }
         // $result = Statuses::with('news')->whereHas('news', function($q) use($status, $project_id, $search){
         //     $q->where('status', $status)->where("news.project_id", $project_id)->where('news.title','like',"%".$search."%");
