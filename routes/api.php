@@ -37,3 +37,4 @@ Route::get('medias', 'APIController@getListMedias'); //get All Medias
 Route::get('language/{id}', 'APIController@getLanguage'); //get an Language
 Route::get('languages', 'APIController@getListLanguages'); //get All Languages
 Route::get('categories', 'APIController@getListCategories'); //get All Categories
+Route::get('keywords/{id}', 'APIController@getKeywordsByNewsId');

@@ -4,13 +4,11 @@ namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class Admin extends Authenticatable
 {
     use Notifiable;
-    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -18,12 +16,12 @@ class User extends Authenticatable
      * @var array
      */
 
-    protected $table = "users";
+    protected $table = "admins";
 
     protected $primaryKey = "id";
-
+    
     protected $fillable = [
-        'name', 'email', 'password','image','organization','phone'
+        'name', 'email', 'password', 'image', 'role', 'organization', 'phone'
     ];
 
     /**
@@ -43,8 +41,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
-    public function news(){
-        return $this->hasMany('App\News', 'id');
-    }
 }

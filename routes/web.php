@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,8 +31,23 @@ Route::get('editor-page', function () {
     return 'Halaman untuk Editor';
 })->middleware('role:editor')->name('editor.page');
 
+Route::get('/login', 'LoginController@getLogin')->middleware('guest');
+Route::post('/login', 'LoginController@postLogin');
+Route::get('/logout', 'LoginController@logout');;
+
+Route::get('/admin', function () {
+    return view('admin');
+})->middleware('auth:admin');
+
+Route::get('/user', function () {
+    return view('user');
+})->middleware('auth:user');
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('upload', 'APIController@upload');
+Route::post('add', 'ProjectAPI@ddContributorAndEditor');
+
+Route::get('email', 'JobController@processQueue');
 
 Route::group(['middleware'], function () {
     Route::get('news', 'NewsAPI@index');
